@@ -13,7 +13,8 @@
 | View | `{Module}View.vue`, one per module | `LoginView.vue` |
 | Store (Pinia) | `use{Name}Store`, only for genuinely global state — see `architecture.md` | `useAuthStore` |
 | Locale file | `locales/pt-br/index.ts`, single file, default-exports a flat object | `login/locales/pt-br/index.ts` |
-| Test | same name as the file under test, `.test.ts` suffix, colocated | `useLogin.test.ts` next to `useLogin.ts` |
+| Unit/component test | same name as the file under test, `.test.ts` suffix, colocated | `useLogin.test.ts` next to `useLogin.ts` |
+| E2e test | `{flow}.spec.ts`, lives in root-level `e2e/`, never colocated with the module | `e2e/login.spec.ts` |
 
 ## Notes
 

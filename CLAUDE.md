@@ -33,16 +33,21 @@ app/
     index.vue
   plugins/
     auth.client.ts                 # hydrates authStore from localStorage on boot
+e2e/
+  login.spec.ts                    # Playwright — real browser, mocks only the network boundary
 ```
 
 ## Commands
 
 ```bash
 npm install
+npx playwright install chromium   # once, downloads the browser Playwright drives
 cp .env.example .env
 npm run dev
-npm test          # vitest run — every module ships layer-by-layer tests, see login/
-npm run typecheck # nuxt typecheck (vue-tsc)
+npm test              # vitest run — every module ships layer-by-layer tests, see login/
+npm run test:e2e      # playwright test — real browser, see e2e/login.spec.ts
+npm run test:e2e:ui   # same, with Playwright's interactive UI mode (watch it click through the app)
+npm run typecheck     # nuxt typecheck (vue-tsc)
 ```
 
 ## Non-negotiables
@@ -51,6 +56,7 @@ npm run typecheck # nuxt typecheck (vue-tsc)
 - A module's `views/` never calls a service directly — that's a component/composable's job.
 - No per-module Pinia store. Global state (`app/stores/`) is only for things genuinely read across unrelated parts of the app — `authStore` is the reference example. See `.claude/rules/architecture.md`, "Two different reasons a piece of code is 'shared'".
 - Every module with a view is registered in Nuxt's file-based routing (`app/pages/`) and in `app/application/locales/pt-br/index.ts` — both, every time.
+- **A screen/form-flow change is not verified by `npm test` alone.** Run `npm run test:e2e` (or extend `e2e/*.spec.ts` for the flow you touched) before considering it done — Vitest's component tests mock `useLogin()`/the composable entirely, so they can't catch a broken hydration, a missing `aria-label`, or a redirect that silently stopped firing. See `.claude/rules/architecture.md`, "Testing".
 
 ## UI kit
 
@@ -67,4 +73,4 @@ npm run typecheck # nuxt typecheck (vue-tsc)
 - No navigation chrome (sidebar/navbar) yet — the "register every module's view in it" step from `docs/ARCHITECTURE.md`'s checklist has nothing to register into today.
 - `apps/backend`'s Sanctum-shaped `/auth/login`/`/auth/logout` endpoints (see above) — needed for this app to talk to a real backend instead of just having the client-side shape ready.
 
-Done: `npm test` passes (40 tests across 7 files, one per layer of the reference module plus the shared composables and `HttpClient`); `npm run typecheck` passes; the app boots and both `/` and `/login` render server-side with the expected content.
+Done: `npm test` passes (40 tests across 7 files, one per layer of the reference module plus the shared composables and `HttpClient`); `npm run test:e2e` passes (6 Playwright cases covering `login`'s full user-facing behavior in a real browser, network mocked at the `fetch` boundary); `npm run typecheck` passes; `npm run build` produces a working production build.

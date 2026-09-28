@@ -6,13 +6,15 @@ A Nuxt 4 **template** with a module-per-feature convention (`app/modules/{name}/
 
 This repo is meant to be cloned/copied as the starting point for a new frontend, not extended into a product itself — same spirit as [`base_clean_arch_bloc`](../base_clean_arch_bloc) (its Flutter counterpart) and [`base_laravel_modular`](../base_laravel_modular), the Laravel monorepo this frontend is designed to sit next to as `apps/web`.
 
-> **Status:** runnable and tested. `login` is a complete, working reference module (types, service + error class, composable, component, view, tests for every layer). 40 tests pass, typecheck passes, the app boots and both `/` and `/login` render.
+> **Status:** runnable and tested. `login` is a complete, working reference module (types, service + error class, composable, component, view, tests for every layer — unit and end-to-end). 40 unit tests pass, 6 Playwright e2e tests pass, typecheck passes, `npm run build` produces a working production build.
 
 ```bash
 npm install
+npx playwright install chromium   # once — downloads the browser Playwright drives
 cp .env.example .env
 npm run dev
-npm test
+npm test           # vitest — fast, mocks the composable boundary
+npm run test:e2e   # playwright — real browser, mocks only the network
 ```
 
 > **Working with AI assistants**: this project ships a `CLAUDE.md` and `.claude/rules/` so Claude Code (or any assistant that reads `CLAUDE.md`) already knows the architecture and naming conventions before generating anything.
@@ -50,6 +52,8 @@ app/
     index.vue
   plugins/
     auth.client.ts                 # hydrates authStore from localStorage on boot
+e2e/
+  login.spec.ts                    # Playwright — real browser, mocks only the network boundary
 ```
 
 ## Core rules
@@ -65,6 +69,10 @@ Full rationale: [`.claude/rules/architecture.md`](.claude/rules/architecture.md)
 
 [DaisyUI](https://daisyui.com/) is wired via Tailwind v4's CSS-first plugin syntax (`@plugin 'daisyui';` in `app/assets/css/main.css`, no config file needed). `LoginForm.vue` is the reference for the intended markup — `fieldset`/`label`/`input`/`btn`/`alert` component classes, not raw utilities, for form controls, buttons and alerts.
 
+## Testing
+
+Two layers: `npm test` (Vitest) mocks the composable/service boundary and runs fast — one test per layer of a module. `npm run test:e2e` (Playwright, `e2e/*.spec.ts`) drives an actual browser against an ephemeral Nuxt server, mocking only the network (`page.route()`), so it catches real hydration/accessibility/navigation bugs the component tests can't. A screen or form-flow change isn't verified by `npm test` alone — see [`.claude/rules/architecture.md`](.claude/rules/architecture.md), "Testing", for when to reach for each.
+
 ## Why the backend error shape is opinionated
 
 `HttpClient.ts` expects a Laravel-style `{message, errors}` JSON body on non-2xx responses, and Bearer-token auth matching a Sanctum-style `{user, token}` login response — built to pair with [`base_laravel_modular`](../base_laravel_modular)'s `apps/backend`. That backend doesn't have `/auth/login`/`/auth/logout` built yet (no Sanctum installed there as of this writing) — see that repo's roadmap.
@@ -74,6 +82,7 @@ Full rationale: [`.claude/rules/architecture.md`](.claude/rules/architecture.md)
 - [x] `login` as a fully-implemented reference module (types, service+error, composable, component, view — all tested).
 - [x] `authStore` + `useAuthSubmit`/`useLogout` as the shared session pattern.
 - [x] DaisyUI wired and demonstrated in `LoginForm.vue`.
+- [x] Playwright e2e suite (`e2e/login.spec.ts`, 6 cases) alongside the Vitest unit/component suite.
 - [ ] No generator/skill scaffolding a new module yet — by hand, following `login`'s shape.
 - [ ] `register` (the natural second consumer of `useAuthSubmit`) isn't built.
 - [ ] No navigation chrome (sidebar/navbar) yet.
