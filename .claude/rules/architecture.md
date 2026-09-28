@@ -21,6 +21,10 @@ Mirrors `base_laravel_modular`'s own distinction (see that repo's `architecture.
 
 Don't reach for a Pinia store because a piece of state is shared between two files inside the *same* module — that's what the module's own composable is for.
 
+## UI kit: DaisyUI
+
+[DaisyUI](https://daisyui.com/) is wired via Tailwind v4's CSS-first plugin syntax — `@plugin 'daisyui';` in `app/assets/css/main.css`, no `tailwind.config.js`/`daisyui.config.js` needed. `LoginForm.vue` is the reference for the intended markup: `fieldset` + `fieldset-legend` + `label` (not raw utility classes) for form fields, `input`/`input-error` for text inputs (a `<label class="input">` wraps input + inline icon/button when one is needed, e.g. the password visibility toggle), `btn`/`btn-primary`/`btn-ghost` for buttons, `alert`/`alert-error` for inline error messages. Reach for a DaisyUI component class before reaching for raw Tailwind utilities on anything that's a form control, button, or alert — that's the entire point of installing it. Utilities are still fine for layout (`flex`, `gap-*`, `max-w-sm`) and one-off spacing/typography DaisyUI doesn't have an opinion on.
+
 ## Testing
 
 Every layer in the reference module has a matching test — `vitest` with `@nuxt/test-utils`'s `mountSuspended` for anything that needs the Nuxt runtime (composables using `useRuntimeConfig`, components), plain `vitest` for framework-free units (services, error classes). `test/setup.ts` stubs `localStorage` globally so `authStore`'s hydrate/persist logic is testable without a real browser. Run the whole suite with `npm test`; a new module should ship with the same per-layer coverage `login` has, not a single end-to-end test standing in for it.

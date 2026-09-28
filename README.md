@@ -61,6 +61,10 @@ app/
 
 Full rationale: [`.claude/rules/architecture.md`](.claude/rules/architecture.md). Naming table: [`.claude/rules/naming-conventions.md`](.claude/rules/naming-conventions.md).
 
+## UI kit
+
+[DaisyUI](https://daisyui.com/) is wired via Tailwind v4's CSS-first plugin syntax (`@plugin 'daisyui';` in `app/assets/css/main.css`, no config file needed). `LoginForm.vue` is the reference for the intended markup — `fieldset`/`label`/`input`/`btn`/`alert` component classes, not raw utilities, for form controls, buttons and alerts.
+
 ## Why the backend error shape is opinionated
 
 `HttpClient.ts` expects a Laravel-style `{message, errors}` JSON body on non-2xx responses, and Bearer-token auth matching a Sanctum-style `{user, token}` login response — built to pair with [`base_laravel_modular`](../base_laravel_modular)'s `apps/backend`. That backend doesn't have `/auth/login`/`/auth/logout` built yet (no Sanctum installed there as of this writing) — see that repo's roadmap.
@@ -69,6 +73,7 @@ Full rationale: [`.claude/rules/architecture.md`](.claude/rules/architecture.md)
 
 - [x] `login` as a fully-implemented reference module (types, service+error, composable, component, view — all tested).
 - [x] `authStore` + `useAuthSubmit`/`useLogout` as the shared session pattern.
+- [x] DaisyUI wired and demonstrated in `LoginForm.vue`.
 - [ ] No generator/skill scaffolding a new module yet — by hand, following `login`'s shape.
 - [ ] `register` (the natural second consumer of `useAuthSubmit`) isn't built.
 - [ ] No navigation chrome (sidebar/navbar) yet.

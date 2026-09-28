@@ -52,6 +52,10 @@ npm run typecheck # nuxt typecheck (vue-tsc)
 - No per-module Pinia store. Global state (`app/stores/`) is only for things genuinely read across unrelated parts of the app — `authStore` is the reference example. See `.claude/rules/architecture.md`, "Two different reasons a piece of code is 'shared'".
 - Every module with a view is registered in Nuxt's file-based routing (`app/pages/`) and in `app/application/locales/pt-br/index.ts` — both, every time.
 
+## UI kit
+
+[DaisyUI](https://daisyui.com/) is wired in `app/assets/css/main.css` via `@plugin 'daisyui';` (Tailwind v4 CSS-first config, no JS config file). `LoginForm.vue` demonstrates the intended usage: `fieldset`/`fieldset-legend`/`label` for form fields, `input`/`input-error`, `btn`/`btn-primary`/`btn-ghost`, `alert`/`alert-error` — component classes, not raw utilities, for anything that's a form control, button, or alert. See `.claude/rules/architecture.md`, "UI kit: DaisyUI".
+
 ## Why the backend error shape is opinionated
 
 `HttpClient.ts` expects a Laravel-style `{message, errors}` JSON body on non-2xx responses, and Bearer-token auth matching a Sanctum-style `{user, token}` login response. This isn't generic REST client boilerplate — it's built to pair with `base_laravel_modular`'s `apps/backend`. See `.claude/rules/architecture.md` for what that backend still needs to build (`POST /auth/login`, `POST /auth/logout`) before this frontend's `login` module is more than a working shape.
