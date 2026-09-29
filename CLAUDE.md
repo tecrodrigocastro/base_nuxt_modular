@@ -1,6 +1,6 @@
 # base_nuxt_modular
 
-Nuxt 4 template with a module-per-feature convention (`app/modules/{name}/`: types → services → composables → components → views), extracted from a real production app's own `docs/ARCHITECTURE.md`. Meant to be cloned/copied as the starting point for a new frontend, not extended into a product itself — same spirit as [`base_clean_arch_bloc`](../base_clean_arch_bloc) (Flutter) and [`base_laravel_modular`](../base_laravel_modular) (the Laravel monorepo this frontend is designed to sit next to as `apps/web`).
+Nuxt 4 template with a module-per-feature convention (`app/modules/{name}/`: types → services → composables → components → views), extracted from a real production app's own `docs/ARCHITECTURE.md`. This is a GitHub template repository ("Use this template" button, or `gh repo create my-project --template tecrodrigocastro/base_nuxt_modular`) — meant to seed a new frontend with fresh Git history, not extended into a product itself — same spirit as [`base_clean_arch_bloc`](../base_clean_arch_bloc) (Flutter) and [`base_laravel_modular`](../base_laravel_modular) (the Laravel monorepo this frontend is designed to sit next to as `apps/web`).
 
 Full layer rules live in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — read that first, it's the actual convention document, not a summary. `.claude/rules/` covers what's specific to this being a template (which module is the reference, why `HttpClient` is shaped the way it is, the two different reasons something is "shared").
 

@@ -4,7 +4,7 @@
 
 Um **template** Nuxt 4 com convenção de módulo por feature (`app/modules/{nome}/`: types → services → composables → components → views), extraído do documento de arquitetura de um app de produção real, em vez de inventado do zero.
 
-Este repositório é feito pra ser clonado/copiado como ponto de partida de um frontend novo, não pra crescer virando um produto em si — mesmo espírito do [`base_clean_arch_bloc`](../base_clean_arch_bloc) (seu equivalente em Flutter) e do [`base_laravel_modular`](../base_laravel_modular), o monorepo Laravel que este frontend é pensado pra acompanhar como `apps/web`.
+Este repositório é um [template repository do GitHub](https://docs.github.com/pt/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template) — use o botão **"Use this template"** (ou `gh repo create meu-projeto --template tecrodrigocastro/base_nuxt_modular`) pra começar um frontend novo com esse conteúdo e histórico de Git limpo, não pra crescer virando um produto em si — mesmo espírito do [`base_clean_arch_bloc`](../base_clean_arch_bloc) (seu equivalente em Flutter) e do [`base_laravel_modular`](../base_laravel_modular), o monorepo Laravel que este frontend é pensado pra acompanhar como `apps/web`.
 
 > **Status:** roda e é testado. `login` é um módulo de referência completo e funcionando (types, service + classe de erro, composable, componente, view, testes de cada camada — unitário e ponta a ponta). 40 testes unitários passam, 6 testes Playwright e2e passam, o typecheck passa, `npm run build` gera um build de produção funcionando.
 
